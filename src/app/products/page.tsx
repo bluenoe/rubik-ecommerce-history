@@ -65,12 +65,12 @@ export default function ProductsPage() {
 
   const { addItem } = useCart()
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (page = pagination?.page || 1) => {
     setLoading(true)
     try {
       const params = new URLSearchParams({
-        page: pagination.page.toString(),
-        limit: pagination.limit.toString(),
+        page: page.toString(),
+        limit: (pagination?.limit || 12).toString(),
         sortBy,
         sortOrder,
         ...(searchQuery && { search: searchQuery }),
@@ -90,8 +90,14 @@ export default function ProductsPage() {
   }
 
   useEffect(() => {
-    fetchProducts()
-  }, [pagination.page, searchQuery, selectedCategory, sortBy, sortOrder])
+    fetchProducts(1)
+  }, [searchQuery, selectedCategory, sortBy, sortOrder])
+
+  useEffect(() => {
+    if (pagination?.page && pagination.page > 1) {
+      fetchProducts(pagination.page)
+    }
+  }, [pagination?.page])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -215,7 +221,7 @@ export default function ProductsPage() {
 
             {/* Results Info */}
             <div className="mt-4 text-sm text-gray-600">
-              Showing {products.length} of {pagination.total} products
+              Showing {products.length} of {pagination?.total || 0} products
               {searchQuery && ` for "${searchQuery}"`}
               {selectedCategory && ` in ${selectedCategory}`}
             </div>
@@ -297,26 +303,28 @@ export default function ProductsPage() {
                 )}
 
                 {/* Pagination */}
-                {pagination.totalPages > 1 && (
+                {(pagination?.totalPages || 0) > 1 && (
                   <div className="flex justify-center items-center gap-2 mt-12">
                     <Button
                       variant="outline"
-                      disabled={!pagination.hasPrev}
-                      onClick={() => handlePageChange(pagination.page - 1)}
+                      disabled={!pagination?.hasPrev}
+                      onClick={() => handlePageChange((pagination?.page || 1) - 1)}
                     >
                       Previous
                     </Button>
                     
-                    {[...Array(pagination.totalPages)].map((_, i) => {
+                    {[...Array(pagination?.totalPages || 0)].map((_, i) => {
                       const page = i + 1
-                      const isCurrentPage = page === pagination.page
+                      const currentPage = pagination?.page || 1
+                      const totalPages = pagination?.totalPages || 0
+                      const isCurrentPage = page === currentPage
                       const showPage = 
                         page === 1 ||
-                        page === pagination.totalPages ||
-                        (page >= pagination.page - 2 && page <= pagination.page + 2)
+                        page === totalPages ||
+                        (page >= currentPage - 2 && page <= currentPage + 2)
                       
                       if (!showPage) {
-                        if (page === pagination.page - 3 || page === pagination.page + 3) {
+                        if (page === currentPage - 3 || page === currentPage + 3) {
                           return <span key={page} className="px-2">...</span>
                         }
                         return null
@@ -336,8 +344,8 @@ export default function ProductsPage() {
                     
                     <Button
                       variant="outline"
-                      disabled={!pagination.hasNext}
-                      onClick={() => handlePageChange(pagination.page + 1)}
+                      disabled={!pagination?.hasNext}
+                      onClick={() => handlePageChange((pagination?.page || 1) + 1)}
                     >
                       Next
                     </Button>
