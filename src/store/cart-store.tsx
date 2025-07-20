@@ -26,7 +26,7 @@ interface CartStore {
   getTotalPrice: () => number
 }
 
-const useCartStore = create<CartStore>()()
+const useCartStore = create<CartStore>(
   persist(
     (set, get) => ({
       items: [],
