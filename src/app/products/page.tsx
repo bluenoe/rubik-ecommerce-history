@@ -221,7 +221,7 @@ export default function ProductsPage() {
 
             {/* Results Info */}
             <div className="mt-4 text-sm text-gray-600">
-              Showing {products.length} of {pagination?.total || 0} products
+              Showing {products?.length || 0} of {pagination?.total || 0} products
               {searchQuery && ` for "${searchQuery}"`}
               {selectedCategory && ` in ${selectedCategory}`}
             </div>
@@ -259,7 +259,7 @@ export default function ProductsPage() {
                       </div>
                     ))}
                   </div>
-                ) : products.length > 0 ? (
+                ) : (products?.length || 0) > 0 ? (
                   <motion.div
                     className={`grid gap-6 ${
                       viewMode === 'grid'
@@ -270,7 +270,7 @@ export default function ProductsPage() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    {products.map((product, index) => (
+                    {products?.map((product, index) => (
                       <motion.div
                         key={product.id}
                         initial={{ opacity: 0, y: 20 }}
