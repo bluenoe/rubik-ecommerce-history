@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
 import { CartProvider } from '@/store/cart-store'
 import { AuthProvider } from '@/components/auth-provider'
+import { ToasterWrapper } from '@/components/toaster-wrapper'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -81,7 +81,7 @@ export default function RootLayout({
               <div className="relative flex min-h-screen flex-col">
                 <div className="flex-1">{children}</div>
               </div>
-              <Toaster />
+              <ToasterWrapper />
             </CartProvider>
           </ThemeProvider>
         </AuthProvider>

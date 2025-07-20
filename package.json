@@ -35,6 +35,8 @@
     "@react-three/drei": "^9.88.17",
     "@react-three/fiber": "^8.15.11",
     "@stripe/stripe-js": "^2.2.2",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.2",
     "canvas-confetti": "^1.9.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

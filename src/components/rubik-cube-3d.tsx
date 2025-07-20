@@ -2,7 +2,6 @@
 
 import { useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Box } from '@react-three/drei'
 import * as THREE from 'three'
 
 function CubePiece({ position, color }: { position: [number, number, number], color: string }) {
@@ -17,14 +16,14 @@ function CubePiece({ position, color }: { position: [number, number, number], co
   })
 
   return (
-    <Box
+    <mesh
       ref={meshRef}
       position={position}
-      args={[0.9, 0.9, 0.9]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       scale={hovered ? 1.1 : 1}
     >
+      <boxGeometry args={[0.9, 0.9, 0.9]} />
       <meshStandardMaterial
         color={color}
         metalness={0.1}
@@ -32,7 +31,7 @@ function CubePiece({ position, color }: { position: [number, number, number], co
         emissive={hovered ? color : '#000000'}
         emissiveIntensity={hovered ? 0.2 : 0}
       />
-    </Box>
+    </mesh>
   )
 }
 
@@ -108,13 +107,6 @@ export function RubikCube3D() {
         <pointLight position={[-10, -10, -10]} intensity={0.5} />
         
         <RubikCubeModel />
-        
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate
-          autoRotateSpeed={1}
-        />
       </Canvas>
     </div>
   )
